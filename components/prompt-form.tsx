@@ -65,7 +65,7 @@ export function PromptForm({
         ])
 
         // Submit and get response message
-        const responseMessage = await submitUserMessage(value,user.modelSelect)
+        const responseMessage = await submitUserMessage(value,user.modelSelect,user.providerSelect)
         setMessages(currentMessages => [...currentMessages, responseMessage])
       }}
     >

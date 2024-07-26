@@ -4,6 +4,7 @@ import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 type User = {
     username: string;
     modelSelect: string;
+    providerSelect: string;
 };
 
 type UserState = {
@@ -11,11 +12,13 @@ type UserState = {
     setUser: (user: Partial<User>) => void;
     clearUser: () => void;
     setModelSelect: (modelSelect: string) => void;
+    setProviderSelect: (providerSelect: string) => void;
 };
 
 const initialUser: User = {
     username: '',
-    modelSelect: ''
+    modelSelect: '',
+    providerSelect: '',
 };
 
 const useUserStore = create<UserState, [['zustand/devtools', never], ['zustand/persist', UserState]]>(
@@ -25,7 +28,8 @@ const useUserStore = create<UserState, [['zustand/devtools', never], ['zustand/p
         user: initialUser,
         setUser: (newUserData) => set((state) => ({ user: { ...state.user, ...newUserData } })),
         clearUser: () => set({ user: initialUser }),
-        setModelSelect: (modelSelect) => set((state) => ({ user: { ...state.user, modelSelect } }))
+        setModelSelect: (modelSelect) => set((state) => ({ user: { ...state.user, modelSelect } })),
+        setProviderSelect: (providerSelect) => set((state) => ({ user: { ...state.user, providerSelect } }))
       }),
       {
         name: 'userStorage',

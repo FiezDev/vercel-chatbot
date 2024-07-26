@@ -88,7 +88,8 @@ export function ChatPanel({
 
                   const responseMessage = await submitUserMessage(
                     example.message,
-                    user.modelSelect
+                    user.modelSelect,
+                    user.providerSelect
                   )
 
                   setMessages(currentMessages => [

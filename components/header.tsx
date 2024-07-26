@@ -2,14 +2,15 @@ import * as React from 'react';
 import Link from 'next/link';
 import { auth } from '@/auth';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { IconGitHub, IconNextChat, IconSeparator, IconVercel } from '@/components/ui/icons';
+import { IconGitHub, IconInfo, IconNextChat, IconSeparator, IconVercel } from '@/components/ui/icons';
 import { UserMenu } from '@/components/user-menu';
 import { SidebarMobile } from './sidebar-mobile';
 import { SidebarToggle } from './sidebar-toggle';
 import { ChatHistory } from './chat-history';
 import { Session } from '@/lib/types';
-import { ModelDropdown } from './model-dropdown';
+import { ModelDropdown } from './ui/dropdown/model-dropdown';
 import { cn } from '@/lib/utils';
+import { ProviderDropdown } from './ui/dropdown/provider-dropdown';
 
 async function UserOrLogin() {
   const session = (await auth()) as Session;
@@ -52,7 +53,9 @@ export function Header() {
         </React.Suspense>
       </div>
       <div className="flex items-center justify-end space-x-2">
+      <ProviderDropdown/>
       <ModelDropdown/>
+      <IconInfo className="size-8"/>
       </div>
     </header>
   );
