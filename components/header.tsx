@@ -1,14 +1,15 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { auth } from '@/auth';
-import { Button } from '@/components/ui/button';
-import { IconNextChat, IconSeparator } from '@/components/ui/icons';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { IconGitHub, IconNextChat, IconSeparator, IconVercel } from '@/components/ui/icons';
 import { UserMenu } from '@/components/user-menu';
 import { SidebarMobile } from './sidebar-mobile';
 import { SidebarToggle } from './sidebar-toggle';
 import { ChatHistory } from './chat-history';
 import { Session } from '@/lib/types';
 import { ModelDropdown } from './model-dropdown';
+import { cn } from '@/lib/utils';
 
 async function UserOrLogin() {
   const session = (await auth()) as Session;
