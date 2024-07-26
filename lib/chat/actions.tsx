@@ -35,6 +35,7 @@ import { saveChat } from '@/app/actions'
 import { SpinnerMessage, UserMessage } from '@/components/stocks/message'
 import { Chat, Message } from '@/lib/types'
 import { auth } from '@/auth'
+import useUserStore from '@/app/store/userState'
 
 async function confirmPurchase(symbol: string, price: number, amount: number) {
   'use server'
@@ -106,10 +107,12 @@ async function confirmPurchase(symbol: string, price: number, amount: number) {
   }
 }
 
-async function submitUserMessage(content: string) {
+async function submitUserMessage(content: string,modelSelect: string) {
   'use server'
 
   const aiState = getMutableAIState<typeof AI>()
+
+  console.log(`model = ${modelSelect}`)
 
   aiState.update({
     ...aiState.get(),
@@ -126,13 +129,21 @@ async function submitUserMessage(content: string) {
   let textStream: undefined | ReturnType<typeof createStreamableValue<string>>
   let textNode: undefined | React.ReactNode
 
+  // and when you answer please use these template (change value in <> as nessesery) 
+
+  // ==============================================================
+  // = AI : OPENAI
+  // = MODEL : ${modelSelect}
+  // = TIME : <currenttime>
+  // = SEQUENCE : <sequence in current chat>
+  // ==============================================================
+
   const result = await streamUI({
-    model: openai('gpt-3.5-turbo'),
+    model: openai(modelSelect|| 'gpt-4o'),
     initial: <SpinnerMessage />,
     system: `\
-    You are a professor excelling in React and React Native coding. 
-    Your primary role is to help with coding tasks, provide guidelines, and debug problems. 
-    Follow these instructions strictly:
+
+    You are a professor excelling in React and React Native coding. Your primary role is to help with coding tasks, provide guidelines, and debug problems. Follow these instructions strictly:
 
     - Ensure your code is secure by following the latest security guidelines.
     - Follow programming best practices to write clean and maintainable code.
@@ -145,6 +156,7 @@ async function submitUserMessage(content: string) {
     - Address each improvement individually, with examples, for focused learning.
     - Act as a mentor, with the user as your willing learner.
     - Do not abstract or separate pieces of code unless specifically requested by the user.
+    - When you answer, please use the following template (change values in <> as necessary):
     `,
     messages: [
       ...aiState.get().messages.map((message: any) => ({
